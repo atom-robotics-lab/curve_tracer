@@ -191,6 +191,11 @@ include_directories(
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
+###############
+## Env-Hooks ##
+###############
+catkin_add_env_hooks(curve_tracer_gazebo SHELLS bash DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/env_hooks)
+
 #############
 ## Testing ##
 #############
