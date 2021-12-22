@@ -8,7 +8,7 @@ project(curve_tracer)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  geomtery_msgs
+  geometry_msgs
   std_msgs
 )
 
@@ -69,7 +69,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   geomtery_msgs#   std_msgs
+#   geometry_msgs#   std_msgs
 # )
 
 ################################################
@@ -104,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES curve_tracer
-#  CATKIN_DEPENDS geomtery_msgs std_msgs
+#  CATKIN_DEPENDS geometry_msgs std_msgs
 #  DEPENDS system_lib
 )
 
