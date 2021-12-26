@@ -14,7 +14,7 @@
 		<include>
 			<uri>model://curve_path</uri>
 			<name>curve_path</name>
-			<pose>0 0 0 0 0 0</pose>
+			<pose>-6.267659 2.969123 0 0 0 0</pose>
 		</include>
 		
 	</world>
