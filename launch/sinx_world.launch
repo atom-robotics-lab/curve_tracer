@@ -19,4 +19,5 @@
 		<arg name="debug" value="false"/>
 	</include>
 
+	<include file="$(find curve_tracer)/launch/curve_tracer.launch" />
 </launch>
