@@ -1,0 +1,4 @@
+curve_tracer_controller:
+  theta_precision: 0.16
+  distance_precision: 0.35
+  pid: {p: 100, i: 0, d: 0}
