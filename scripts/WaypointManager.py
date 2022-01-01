@@ -34,5 +34,5 @@ class WaypointMananger:
 
 if __name__ == "__main__":
   waypoint_manager = WaypointMananger(res=10)
-  print(waypoint_manager.way_point())
+  #print(waypoint_manager.way_point())
   print(waypoint_manager.get_next_waypoint())
