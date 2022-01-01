@@ -44,6 +44,7 @@ class CurveTracer:
             rate.sleep()
         
         move(0,0)           #stop the bot
+        
         self.state=2        #state -2 -> goal reached
 
         rospy.loginfo("Bot has arrived at destination")
