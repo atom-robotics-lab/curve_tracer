@@ -34,32 +34,56 @@ class CurveTracer:
 
 
     def goto(self, dest_x, dest_y):
-        while self.state != Bot_State.Goal_Reached.value:
-            theta_goal = np.arctan((dest_y - self.odom.get_position()["y"]) / dest_x - self.odom.get_position()["x"])
+    
+              # when goal is not reached
+              
+        while self.state != Bot_State.Goal_Reached.value: 
+        
+              # mathematical formula to calculate angle to be rotated
+              
+            theta_goal = np.arctan((dest_y - self.odom.get_position()["y"]) / dest_x - self.odom.get_position()["x"])  
             bot_theta = self.odom.get_position()["z"]
             theta_error = round(bot_theta - theta_goal, 2)
             rospy.loginfo("STATE:" + str(self.state))
             rospy.loginfo("THETA ERROR:" + str(theta_error))
-            if self.state == Bot_State.Fixing_Yaw.value:
+            
+             # if statement to fix yaw of bot 
+            
+            if self.state == Bot_State.Fixing_Yaw.value: 
+            
+             
+             # to check whether generated errror is in within limit or not  
+                 
                 if np.abs(theta_error) > self.theta_precision:
                     rospy.loginfo("FIXING YAW ")
-                    fix_yaw(theta_error, 1.7)
+                    
+             # if not then call function to correct it  
+                    fix_yaw(theta_error, 1.7)             
                 else:
                     rospy.loginfo("YAW FIXED ! Moving toward Goal")
                     self.state = Bot_State.Moving_Straight.value
-
+            
+             #  the bot is correctly oriented so it move towards goal 
+             
             elif self.state == Bot_State.Moving_Straight.value:
-                position_error = np.sqrt(pow(dest_y - self.odom.get_position()["y"], 2) + pow(dest_x - self.odom.get_position()["x"], 2))
+            
+            # mathematical formula to calculate positional error
+            
+                position_error = np.sqrt(pow(dest_y - self.odom.get_position()["y"], 2) + pow(dest_x - self.odom.get_position()["x"], 2)) 
                 rospy.loginfo("POSITION ERROR: " + str(position_error))
-                if position_error > self.dist_precision and np.abs(theta_error) < self.theta_precision:
+                
+                if position_error > self.dist_precision and np.abs(theta_error) < self.theta_precision: 
                     rospy.loginfo("Moving Straight")
                     move_straight(position_error, self.P )
-                elif np.abs(theta_error) > self.theta_precision:
+                    
+                elif np.abs(theta_error) > self.theta_precision: 
                     rospy.loginfo("Going out of line!")
-                    self.state = 0
-                elif position_error < self.dist_precision:
+                    self.state = Bot_State.Fixing_Yaw.value
+                    
+                    #  goal reached 
+                elif position_error < self.dist_precision:  
                     rospy.loginfo("GOAL REACHED")
-                    self.state = 2
+                    self.state = Bot_State.Goal_Reached.value
 
     def control_loop(self):
         rate = rospy.Rate(10)
@@ -82,6 +106,5 @@ class CurveTracer:
         self.state = 2  # state -2 -> goal reached
 
         rospy.loginfo("Bot has arrived at destination")
-
 
 
