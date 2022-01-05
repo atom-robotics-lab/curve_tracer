@@ -1,6 +1,5 @@
 #! /usr/bin/env python3
 
-import yaml
 import rospy
 from geometry_msgs.msg import Twist
 from enums import Bot_State
@@ -20,17 +19,13 @@ class CurveTracer:
 
         self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
         self.velocity_msg = Twist()
-        # with open("data.yaml", 'r') as stream:
-        #   data_loaded = yaml.safe_load(stream)
-        # self.theta_precision = data_loaded["curve_tracer_controller"]["theta_precision"]
-        # self.dist_precision = data_loaded["curve_tracer_controller"]["distance_precision"]
-        # self.P = data_loaded["curve_tracer_controller"]["pid"]["p"]
-
+        
         # making the parameters as memebers of the class
-        self.theta_precision = rospy.get_param("theta_precision")
-        self.dist_precision = rospy.get_param("distance_precision")
-        self.P = rospy.get_param("pid")
-        self.state = 0
+        self.theta_precision = rospy.get_param("curve_tracer_controller/theta_precision")
+        self.dist_precision = rospy.get_param("curve_tracer_controller/distance_precision")
+        self.P = rospy.get_param("curve_tracer_controller/pid/p")
+        self.D = rospy.get_param("curve_tracer_controller/pid/d")
+        self.I = rospy.get_param("curve_tracer_controller/pid/i")
 
 
     def goto(self, dest_x, dest_y):
@@ -42,7 +37,7 @@ class CurveTracer:
               # mathematical formula to calculate angle to be rotated
               
             theta_goal = np.arctan((dest_y - self.odom.get_position()["y"]) / dest_x - self.odom.get_position()["x"])  
-            bot_theta = self.odom.get_position()["z"]
+            bot_theta = self.odom.get_orientation()["z"]
             theta_error = round(bot_theta - theta_goal, 2)
             rospy.loginfo("STATE:" + str(self.state))
             rospy.loginfo("THETA ERROR:" + str(theta_error))
@@ -102,8 +97,6 @@ class CurveTracer:
             rate.sleep()
 
         move(0, 0)  # stop the bot
-
-        self.state = 2  # state -2 -> goal reached
 
         rospy.loginfo("Bot has arrived at destination")
 
