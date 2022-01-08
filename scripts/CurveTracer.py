@@ -2,9 +2,10 @@
 
 import rospy
 from geometry_msgs.msg import Twist
-from enums import Bot_State
+from Robot_State import Bot_State
 from WaypointManager import WaypointMananger
 from OdomSubscriber import OdomSubscriber
+import numpy as np
 
 
 class CurveTracer:
@@ -26,6 +27,20 @@ class CurveTracer:
         self.P = rospy.get_param("curve_tracer_controller/pid/p")
         self.D = rospy.get_param("curve_tracer_controller/pid/d")
         self.I = rospy.get_param("curve_tracer_controller/pid/i")
+    
+    def move(linear,angular):
+  
+    	velocity_msg.linear.x = linear
+    	velocity_msg.angular.z = angular
+    	self.pub.publish(velocity_msg)
+        		
+    def fix_error(self,P,linear_error=0,theta_error=0):
+    	if linear!=0:
+    	#moving in straight line
+          move(P*linear_error,0)
+    	else:
+    	#fixing the yaw
+      	  move(0.1 * np.abs(theta_error), P * -theta_error)
 
 
     def goto(self, dest_x, dest_y):
@@ -53,7 +68,7 @@ class CurveTracer:
                     rospy.loginfo("FIXING YAW ")
                     
              # if not then call function to correct it  
-                    fix_yaw(theta_error, 1.7)             
+                    fix_yaw(theta_error, self.P)             
                 else:
                     rospy.loginfo("YAW FIXED ! Moving toward Goal")
                     self.state = Bot_State.Moving_Straight.value
