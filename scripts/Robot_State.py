@@ -2,8 +2,10 @@ from enum import Enum
 
 class Bot_State(Enum):
 
-  Fixing_Yaw = 0
-  Moving_Straight = 1
-  Goal_Reached = 2
+
+  IdleState = 0
+  Fixing_Yaw = 1
+  Moving_Straight = 2
+  Goal_Reached = 3
 
 
