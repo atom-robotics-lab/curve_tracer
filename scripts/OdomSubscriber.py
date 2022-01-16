@@ -1,7 +1,8 @@
 #!/usr/bin/env python    
 import rospy
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Pose     
+from geometry_msgs.msg import Pose
+from tf.transformations import euler_from_quaternion, quaternion_from_euler     
 
 
 class OdomSubscriber():
@@ -19,18 +20,34 @@ class OdomSubscriber():
          odom_position = {"x" :self.odom_data.pose.pose.position.x, "y" :self.odom_data.pose.pose.position.y, "z" :self.odom_data.pose.pose.position.z}
          return (odom_position)
          
-     def get_orientation(self):
-         odom_orientation = {"w" :self.odom_data.pose.pose.orientation.w, "x" :self.odom_data.pose.pose.orientation.x , "y" :self.odom_data.pose.pose.orientation.y, "z" : self.odom_data.pose.pose.orientation.z}
-         return (odom_orientation)
+     def get_orientation(self,orientation_choice='quaternion'):
+         odom_orientation_quaternion= {"w" :self.odom_data.pose.pose.orientation.w, "x" :self.odom_data.pose.pose.orientation.x , "y" :self.odom_data.pose.pose.orientation.y, "z" :   self.odom_data.pose.pose.orientation.z}
+         x  = self.odom_data.pose.pose.orientation.x;
+         y  = self.odom_data.pose.pose.orientation.y;
+         z = self.odom_data.pose.pose.orientation.z;
+         w = self.odom_data.pose.pose.orientation.w;
+
+         
+         (roll, pitch, yaw) = euler_from_quaternion ([x,y,w,z])
+         odom_orientation_euler = {'roll':roll,'pitch':pitch,'yaw':yaw}
+         if orientation_choice.lower() == 'euler':
+            return odom_orientation_euler
+         else :
+            return odom_orientation_quaternion
+        
          
 
 call_odomsubs = OdomSubscriber()
 
 rate = rospy.Rate(10)
-
-while(True):
-    print("Odom Position:")
-    print(call_odomsubs.get_position())
-    print("Odom orientation:")
-    print(call_odomsubs.get_orientation())
+# print data on terminal 
+while not rospy.is_shutdown():
+    print("-"*47)
+    print("Odom Position:"," "*30,'|')
+    print(call_odomsubs.get_position()," "*14,'|')
+    print("Odom orientation (in quaternion) :"," "*10,'|')
+    print(call_odomsubs.get_orientation()," "*4,'|')
+    print("Odom orientation (in euler) :"," "*15,'|')
+    print(call_odomsubs.get_orientation('EuLER')," "*4,'|')
+    print("-"*47)
     rate.sleep()

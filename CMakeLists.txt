@@ -8,8 +8,11 @@ project(curve_tracer)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
   geometry_msgs
   std_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -53,11 +56,11 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+ add_service_files(
+   FILES
+   add_server.srv
+   AddTwoInts.srv
+  )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -208,3 +211,8 @@ catkin_add_env_hooks(curve_tracer_gazebo SHELLS bash DIRECTORY ${CMAKE_CURRENT_S
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+## Adding service node
+catkin_install_python(PROGRAMS scripts/service_server.py scripts/service_client.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
