@@ -2,7 +2,7 @@
 	<arg name="x_pos" default="0.0" />
 	<arg name="y_pos" default="0.0" />
 	<arg name="z_pos" default="0.0213" />
-	<arg name="yaw" default="2.44" />
+	<arg name="yaw" default="0" />
 
 	<include file="$(find mr_robot_description)/launch/display.launch">
 		<arg name="rvizconfig" value="$(find curve_tracer)/rviz/curve_tracer.rviz" />

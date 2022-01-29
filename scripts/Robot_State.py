@@ -7,5 +7,3 @@ class Bot_State(Enum):
   Fixing_Yaw = 1
   Moving_Straight = 2
   Goal_Reached = 3
-
-
