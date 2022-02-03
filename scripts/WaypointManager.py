@@ -3,7 +3,7 @@
 import numpy as np
 
 
-class WaypointMananger:
+class WaypointManager:
   def __init__(self,res=1):
     self.index = 0
     self.res = res
@@ -33,6 +33,6 @@ class WaypointMananger:
 
 
 if __name__ == "__main__":
-  waypoint_manager = WaypointMananger(res=10)
+  waypoint_manager = WaypointManager(res=10)
   print(waypoint_manager.way_point())
   print(waypoint_manager.get_next_waypoint())
